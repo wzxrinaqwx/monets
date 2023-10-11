@@ -67,7 +67,7 @@ for i in range(1,3):
 
 moneys = sprite.Group()
 for i in range(1,8):
-    money = Money('money.jpg', randint(80, win_width - 60), -40, randint(1,5), 90, 65)
+    money = Money('money.png', randint(80, win_width - 60), -40, randint(1,5), 90, 65)
     
     moneys.add(money)
 
@@ -106,7 +106,7 @@ while run:
             window.blit(win, (200, 200))
         if sprite.spritecollide(player, moneys, True):
             score+=1
-            money = Money('money.jpg', randint(80, win_width - 60), -40, randint(1,5), 90, 65)
+            money = Money('money.png', randint(80, win_width - 60), -40, randint(1,5), 90, 65)
             moneys.add(money)
 
         if health == 0:
