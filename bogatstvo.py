@@ -43,9 +43,11 @@ class Enemy(GameSprite):
         self.rect.y += self.speed
         global lost
         if self.rect.y > win_height:
-           self.rect.x = randint(60, win_width -60)
-           self.rect.y = 0
-           lost = lost+1
+            self.kill()
+            lost = lost+1
+            self = Enemy('enemy.png', randint(80, win_width - 60), -40, randint(1,5), 90, 65)
+            enemys.add(self)
+        
 class Money(GameSprite):
     def update(self):
         self.rect.y += self.speed
@@ -59,7 +61,7 @@ player=Player('player.png', 5, win_height - 100,  10, 65, 65)
 
 
 enemys = sprite.Group()
-for i in range(1,6):
+for i in range(1,3):
     enemy = Enemy('enemy.png', randint(80, win_width - 60), -40, randint(1,5), 90, 65)
     enemys.add(enemy)
 
@@ -94,35 +96,37 @@ while run:
         moneys.update()
         moneys.draw(window)
 
-        collides = sprite.groupcollide(enemys, moneys, True, True)
-        for e in collides:
-            score += 1
-            money = Money('money.jpg', randint(80, win_width - 60), -40, randint(1,5), 90, 65)
-    
-            moneys.add(money)
+        
             
-        if sprite.spritecollide(player, enemys, False) or lost >= 3:
+        if sprite.spritecollide(player, enemys, False) or lost>=10:
             finish = True
             window.blit(lose, (200, 200))
-        if score >= 10:
+        if score >= 20:
             finish = True
             window.blit(win, (200, 200))
-        if sprite.spritecollide(player, moneys, False):
-            health -= 1
-            sprite.spritecollide(player, moneys, True)
+        if sprite.spritecollide(player, moneys, True):
+            score+=1
+            money = Money('money.jpg', randint(80, win_width - 60), -40, randint(1,5), 90, 65)
+            moneys.add(money)
 
         if health == 0:
             finish = True
             window.blit(lose, (200, 200))
+            
+        
+       
+
+
+
         text_score = font2.render('Счётчик:' + str(score), 2, (255, 55, 255))
         window.blit(text_score, (10, 20))
         text_lose = font1.render('Пропущено:' + str(lost), 1, (255, 55, 255))
         window.blit(text_lose, (10, 50))
-        text_health = font1.render('Жизни:' + str(health), 1, (255, 55, 255))
-        window.blit(text_health, (10, 80))
+   
         
 
    
         display.update()
 
     clock.tick(FPS)
+
